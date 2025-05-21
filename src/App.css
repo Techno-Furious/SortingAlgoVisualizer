@@ -1,7 +1,8 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
@@ -52,12 +53,14 @@
 }
 
 header {
+  width: 100%;
   padding: 1.5rem;
   background-color: #16213e;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .controls-container {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -140,12 +143,14 @@ header {
 
 main {
   flex: 1;
-  padding: 2rem;
+  width: 100%;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
 }
 
 footer {
+  width: 100%;
   padding: 1rem;
   text-align: center;
   background-color: #16213e;
@@ -246,6 +251,7 @@ footer {
   border-radius: 6px;
   padding: 1rem;
   overflow-x: auto;
+  text-align: left;
 }
 
 .code-container pre {
@@ -465,4 +471,147 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.heap-visualization {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  background-color: #16213e;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.heap-visualization-header {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: #f72585;
+  text-align: center;
+}
+
+.heap-visualization-content {
+  position: relative;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.heap-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  min-height: 250px;
+  margin: 0 auto;
+}
+
+.heap-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.heap-node-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heap-node {
+  width: 40px;
+  height: 40px;
+  background-color: #0f3460;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.heap-node.node-default {
+  background-color: #0f3460;
+}
+
+.heap-node.node-compare {
+  background-color: #ffd700;
+  color: #333;
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+.heap-node.node-swap {
+  background-color: #e94560;
+  transform: scale(1.1);
+}
+
+.heap-node.node-sorted {
+  background-color: #40916c;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.heap-edge {
+  position: absolute;
+  background-color: #5c6c85;
+  height: 2px;
+  z-index: 1;
+  transform-origin: 0 0;
+}
+
+.heap-status {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #f72585;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.heap-indicator {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+/* When heap visualization is active, adjust array container height */
+.heap-active .visualization-area {
+  min-height: auto;
+  max-height: none;
+}
+
+.heap-active .array-container {
+  height: 150px;
+}
+
+/* Media queries for responsive heap visualization */
+@media (max-width: 768px) {
+  .heap-node {
+    width: 35px;
+    height: 35px;
+    margin: 0 8px;
+    font-size: 0.8rem;
+  }
+  
+  .heap-row {
+    margin-bottom: 20px;
+  }
 }

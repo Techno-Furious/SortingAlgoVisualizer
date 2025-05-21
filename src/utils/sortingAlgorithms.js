@@ -299,9 +299,21 @@ export const heapSort = (array) => {
   const n = arrayCopy.length;
 
   // Build heap (rearrange array)
+  animations.push({
+    type: ANIMATION_TYPES.COMPARE,
+    indices: [],
+    message: "Phase 1: Building the max heap"
+  });
+
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
     heapify(arrayCopy, n, i, animations);
   }
+
+  animations.push({
+    type: ANIMATION_TYPES.COMPARE,
+    indices: [],
+    message: "Phase 2: Extracting elements from heap in order"
+  });
 
   // Extract elements from heap one by one
   for (let i = n - 1; i > 0; i--) {
@@ -310,6 +322,7 @@ export const heapSort = (array) => {
       type: ANIMATION_TYPES.SWAP,
       indices: [0, i],
       values: [arrayCopy[i], arrayCopy[0]],
+      message: `Moving root node (largest element: ${arrayCopy[0]}) to position ${i}`
     });
 
     [arrayCopy[0], arrayCopy[i]] = [arrayCopy[i], arrayCopy[0]];
@@ -344,6 +357,7 @@ function heapify(array, n, i, animations) {
     animations.push({
       type: ANIMATION_TYPES.COMPARE,
       indices: [largest, left],
+      message: `Comparing node ${i} (value: ${array[i]}) with left child node ${left} (value: ${array[left]})`
     });
 
     if (array[left] > array[largest]) {
@@ -356,6 +370,7 @@ function heapify(array, n, i, animations) {
     animations.push({
       type: ANIMATION_TYPES.COMPARE,
       indices: [largest, right],
+      message: `Comparing ${largest === i ? `node ${i}` : `left child node ${left}`} (value: ${array[largest]}) with right child node ${right} (value: ${array[right]})`
     });
 
     if (array[right] > array[largest]) {
@@ -369,6 +384,7 @@ function heapify(array, n, i, animations) {
       type: ANIMATION_TYPES.SWAP,
       indices: [i, largest],
       values: [array[largest], array[i]],
+      message: `Swapping node ${i} (value: ${array[i]}) with ${largest === left ? 'left' : 'right'} child node ${largest} (value: ${array[largest]})`
     });
 
     [array[i], array[largest]] = [array[largest], array[i]];

@@ -34,7 +34,7 @@ function App() {
         />
       </main>
       <footer>
-        <p>Sorting Algorithm Visualizer | Created with React and Vite</p>
+        <p>Sorting Algorithm Visualizer</p>
       </footer>
     </div>
   )
