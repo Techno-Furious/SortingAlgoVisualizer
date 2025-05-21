@@ -1,0 +1,355 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Modern dark theme for sorting visualizer */
+.app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a2e;
+  color: #e6e6e6;
+}
+
+header {
+  padding: 1.5rem;
+  background-color: #16213e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.controls-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.algo-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.algo-btn {
+  padding: 0.5rem 1rem;
+  background-color: #0f3460;
+  border: none;
+  border-radius: 4px;
+  color: #e6e6e6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.algo-btn:hover {
+  background-color: #1a5dad;
+}
+
+.algo-btn.active {
+  background-color: #e94560;
+  color: white;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slider-container label {
+  color: #c9c9c9;
+  font-size: 0.9rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1.25rem;
+  background-color: #0f3460;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #1a5dad;
+}
+
+.action-btn.play {
+  background-color: #40916c;
+}
+
+.action-btn.play:hover {
+  background-color: #52b788;
+}
+
+.action-btn.reset {
+  background-color: #e94560;
+}
+
+.action-btn.reset:hover {
+  background-color: #f05d77;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  padding: 1rem;
+  text-align: center;
+  background-color: #16213e;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Sorting Visualizer specific styles */
+.sorting-visualizer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+}
+
+.array-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 500px;
+  padding: 0 1rem;
+  gap: 1px;
+}
+
+.array-bar {
+  background-color: #0f3460;
+  margin: 0 1px;
+  transition: height 0.1s ease, background-color 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 30px;
+}
+
+.array-value {
+  position: absolute;
+  bottom: 2px;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.algorithm-container {
+  background-color: #16213e;
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.algorithm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.algorithm-description {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.algorithm-description p {
+  color: #c9c9c9;
+  line-height: 1.6;
+}
+
+.code-toggle-btn {
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  background-color: #0f3460;
+  color: #e6e6e6;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.code-toggle-btn:hover {
+  background-color: #1a5dad;
+}
+
+.code-container {
+  margin-top: 1rem;
+  background-color: #1a1a2e;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.code-container pre {
+  margin: 0;
+  font-size: 0.9rem;
+  font-family: 'Fira Code', monospace;
+  color: #e6e6e6;
+}
+
+/* Custom array input styles */
+.custom-array-section {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.custom-array-btn {
+  background-color: #0f3460;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.custom-array-btn:hover {
+  background-color: #1a5dad;
+}
+
+.custom-array-input {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.custom-input-field {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: #1a1a2e;
+  border: 1px solid #0f3460;
+  border-radius: 4px;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.apply-custom-btn {
+  background-color: #40916c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.apply-custom-btn:hover {
+  background-color: #52b788;
+}
+
+.error-message {
+  color: #e94560;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Visualization legend */
+.visualization-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  background-color: #16213e;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0.5rem;
+}
+
+.legend-color {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .controls-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .algo-selector {
+    flex-wrap: wrap;
+  }
+  
+  .array-container {
+    height: 350px;
+  }
+  
+  .custom-array-input {
+    flex-direction: column;
+  }
+}
+
+/* Disable buttons */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
