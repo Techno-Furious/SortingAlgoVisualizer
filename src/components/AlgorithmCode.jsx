@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 const AlgorithmCode = ({ algorithm }) => {
   const [showCode, setShowCode] = useState(false);
-  
-  const getAlgorithmCode = () => {
+    const getAlgorithmCode = () => {
     switch (algorithm) {
       case 'bubble':
         return `function bubbleSort(arr) {
@@ -107,12 +106,53 @@ function heapify(arr, n, i) {
     heapify(arr, n, largest);
   }
 }`;
+      case 'radix':
+        return `function radixSort(arr) {
+  // Find the maximum number to know number of digits
+  const max = Math.max(...arr);
+  
+  // Do counting sort for every digit
+  for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+    countingSortByDigit(arr, exp);
+  }
+  
+  return arr;
+}
+
+function countingSortByDigit(arr, exp) {
+  const n = arr.length;
+  const output = new Array(n).fill(0);
+  const count = new Array(10).fill(0);
+  
+  // Store count of occurrences in count[]
+  for (let i = 0; i < n; i++) {
+    const digit = Math.floor(arr[i] / exp) % 10;
+    count[digit]++;
+  }
+  
+  // Change count[i] so that count[i] now contains
+  // actual position of this digit in output[]
+  for (let i = 1; i < 10; i++) {
+    count[i] += count[i - 1];
+  }
+  
+  // Build the output array
+  for (let i = n - 1; i >= 0; i--) {
+    const digit = Math.floor(arr[i] / exp) % 10;
+    output[count[digit] - 1] = arr[i];
+    count[digit]--;
+  }
+  
+  // Copy the output array to arr[]
+  for (let i = 0; i < n; i++) {
+    arr[i] = output[i];
+  }
+}`;
       default:
         return '';
     }
   };
-  
-  const getAlgorithmDescription = () => {
+    const getAlgorithmDescription = () => {
     switch (algorithm) {
       case 'bubble':
         return 'Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted. Time complexity: O(n²).';
@@ -122,6 +162,8 @@ function heapify(arr, n, i) {
         return 'Quick Sort selects a pivot element and partitions the array around it. Elements smaller than the pivot go to the left, larger to the right. The process repeats for each partition. Time complexity: O(n log n) average case, O(n²) worst case.';
       case 'heap':
         return 'Heap Sort builds a max-heap from the array and repeatedly extracts the maximum element, placing it at the end of the sorted portion. Time complexity: O(n log n).';
+      case 'radix':
+        return 'Radix Sort is a non-comparative sorting algorithm that sorts integers by processing individual digits. It uses counting sort as a subroutine to sort elements based on their individual digits. Time complexity: O(nk) where k is the number of digits in the largest number.';
       default:
         return '';
     }

@@ -7,12 +7,12 @@ function App() {
   const [currentAlgorithm, setCurrentAlgorithm] = useState('bubble')
   const [speed, setSpeed] = useState(30)
   const [arraySize, setArraySize] = useState(30)
-  
-  const algorithms = [
+    const algorithms = [
     { id: 'bubble', name: 'Bubble Sort' },
     { id: 'merge', name: 'Merge Sort' },
     { id: 'quick', name: 'Quick Sort' },
-    { id: 'heap', name: 'Heap Sort' }
+    { id: 'heap', name: 'Heap Sort' },
+    { id: 'radix', name: 'Radix Sort' }
   ]
   
   return (

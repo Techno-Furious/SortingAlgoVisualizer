@@ -19,6 +19,14 @@ export const ANIMATION_TYPES = {
   SORTED: "sorted", // When an element is in its sorted position
   PIVOT: "pivot", // For marking pivot elements in quick sort
   MERGE_SPLIT: "merge_split", // For visualizing merge sort splits and joins
+  BUCKET: "bucket", // For visualizing buckets in radix sort
+  BUCKET_ASSIGN: "bucket_assign", // When assigning an element to a bucket
+  BUCKET_COLLECT: "bucket_collect", // When collecting an element from a bucket
+  BUCKET_HIGHLIGHT: "bucket_highlight", // When highlighting a bucket
+  BUCKETS_POPULATED: "buckets_populated", // When all buckets are populated
+  RADIX_PHASE: "radix_phase", // Starting a new digit place in radix sort
+  RADIX_START: "radix_start", // Starting the radix sort algorithm
+  RADIX_STEP_COMPLETE: "radix_step_complete", // When a digit place sort is complete
 };
 
 // Helper function to mark all elements as sorted
@@ -368,4 +376,128 @@ function heapify(array, n, i, animations) {
     // Recursively heapify the affected sub-tree
     heapify(array, n, largest, animations);
   }
+}
+
+// Radix Sort
+export const radixSort = (array) => {
+  const animations = [];
+  const arrayCopy = [...array];
+  const n = arrayCopy.length;
+  
+  // Find the maximum number to determine the number of digits
+  let max = Math.max(...arrayCopy);
+  
+  // Start a new phase for this digit place
+  animations.push({
+    type: ANIMATION_TYPES.RADIX_START,
+    message: "Starting Radix Sort",
+  });
+  
+  // Do counting sort for every digit
+  for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+    // Start a new phase for this digit place
+    animations.push({
+      type: ANIMATION_TYPES.RADIX_PHASE,
+      exp: exp,
+      message: `Sorting by ${exp === 1 ? "ones" : exp === 10 ? "tens" : exp === 100 ? "hundreds" : "thousands"} place`,
+    });
+    
+    countingSortByDigit(arrayCopy, n, exp, animations);
+  }
+  
+  // Ensure all elements are marked as sorted at the end
+  return markAllAsSorted(animations, n);
+};
+
+function countingSortByDigit(array, n, exp, animations) {
+  const output = new Array(n).fill(0);
+  const count = new Array(10).fill(0);
+  const buckets = Array.from({ length: 10 }, () => []);
+  
+  // First pass: Place each element in its corresponding bucket
+  for (let i = 0; i < n; i++) {
+    const digit = Math.floor(array[i] / exp) % 10;
+    
+    // Animate: Highlight the element being examined
+    animations.push({
+      type: ANIMATION_TYPES.COMPARE,
+      indices: [i],
+      message: `Examining element ${array[i]} with digit ${digit} at position ${exp}`,
+    });
+    
+    // Animate: Move the element to its bucket
+    animations.push({
+      type: ANIMATION_TYPES.BUCKET_ASSIGN,
+      value: array[i],
+      fromIndex: i,
+      digit: digit,
+      exp: exp,
+      message: `Moving ${array[i]} to bucket ${digit}`,
+    });
+    
+    // Add to bucket
+    buckets[digit].push(array[i]);
+    count[digit]++;
+  }
+  
+  // Show all buckets populated
+  animations.push({
+    type: ANIMATION_TYPES.BUCKETS_POPULATED,
+    buckets: [...buckets],
+    exp: exp,
+    message: "All elements placed in buckets",
+  });
+  
+  // Second pass: Collect elements from buckets in order
+  let arrayIndex = 0;
+  
+  for (let digit = 0; digit < 10; digit++) {
+    // Animate: Highlight the current bucket being processed
+    if (buckets[digit].length > 0) {
+      animations.push({
+        type: ANIMATION_TYPES.BUCKET_HIGHLIGHT,
+        digit: digit,
+        message: `Collecting elements from bucket ${digit}`,
+      });
+      
+      // Collect elements from this bucket
+      for (const value of buckets[digit]) {
+        // Animate: Moving element from bucket back to array
+        animations.push({
+          type: ANIMATION_TYPES.BUCKET_COLLECT,
+          value: value,
+          toIndex: arrayIndex,
+          digit: digit,
+          message: `Placing ${value} back at position ${arrayIndex}`,
+        });
+        
+        // Update output array
+        output[arrayIndex] = value;
+        arrayIndex++;
+      }
+    }
+  }
+  
+  // Copy the output array to the original array
+  for (let i = 0; i < n; i++) {
+    if (array[i] !== output[i]) {
+      // Overwrite values in the original array
+      animations.push({
+        type: ANIMATION_TYPES.OVERWRITE,
+        index: i,
+        value: output[i],
+        message: `Final placement: ${output[i]} at position ${i}`,
+      });
+      
+      array[i] = output[i];
+    }
+  }
+  
+  // Show the array after this digit place is processed
+  animations.push({
+    type: ANIMATION_TYPES.RADIX_STEP_COMPLETE,
+    array: [...array],
+    exp: exp,
+    message: `Completed sorting by ${exp === 1 ? "ones" : exp === 10 ? "tens" : exp === 100 ? "hundreds" : "thousands"} place`,
+  });
 }

@@ -157,15 +157,26 @@ footer {
 .sorting-visualizer {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   flex: 1;
+}
+
+/* Visualization area to keep buckets and array visible together */
+.visualization-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: auto;
+  min-height: 400px;
+  max-height: 450px;
+  overflow: visible;
 }
 
 .array-container {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: 500px;
+  height: 250px;
   padding: 0 1rem;
   gap: 1px;
 }
@@ -178,13 +189,13 @@ footer {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  min-height: 30px;
+  min-height: 20px;
 }
 
 .array-value {
   position: absolute;
   bottom: 2px;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: white;
   font-weight: bold;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
@@ -352,4 +363,106 @@ footer {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Radix Sort specific styles */
+.digit-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #f72585;
+  background-color: rgba(26, 26, 46, 0.8);
+  padding: 2px 4px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.status-message {
+  background-color: #16213e;
+  color: #e6e6e6;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* Radix Sort Buckets */
+.radix-buckets-container {
+  margin-bottom: 8px;
+  background-color: #16213e;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.current-digit-indicator {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #f72585;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.buckets-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.digit-bucket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+  width: calc(10% - 4px);
+  padding: 4px;
+  background-color: rgba(15, 52, 96, 0.5);
+  border-radius: 4px;
+  position: relative;
+}
+
+.bucket-label {
+  position: absolute;
+  top: -10px;
+  background-color: #f72585;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.bucket-items {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  min-height: 80px;
+  width: 100%;
+  padding-top: 8px;
+  overflow-y: auto;
+  max-height: 90px;
+}
+
+.bucket-item {
+  width: 80%;
+  background-color: #f72585;
+  color: white;
+  margin: 1px 0;
+  text-align: center;
+  font-size: 9px;
+  border-radius: 3px;
+  min-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

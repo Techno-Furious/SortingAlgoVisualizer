@@ -335,10 +335,9 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
               arrayBars[animation.indices[0]].style.backgroundColor = SWAP_COLOR;
               arrayBars[animation.indices[1]].style.backgroundColor = SWAP_COLOR;
               
-              // Update the height of the bars - use smaller heights for radix sort
-              const heightMultiplier = algorithm === 'radix' ? 2 : 3;
-              arrayBars[animation.indices[0]].style.height = `${animation.values[0] * heightMultiplier}px`;
-              arrayBars[animation.indices[1]].style.height = `${animation.values[1] * heightMultiplier}px`;
+              // Update the height of the bars
+              arrayBars[animation.indices[0]].style.height = `${animation.values[0] * 3}px`;
+              arrayBars[animation.indices[1]].style.height = `${animation.values[1] * 3}px`;
               
               // Update the number in the bar
               const valueDiv0 = arrayBars[animation.indices[0]].querySelector('.array-value');
@@ -378,9 +377,8 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
             if (arrayBars[animation.index]) {
               arrayBars[animation.index].style.backgroundColor = SWAP_COLOR;
               
-              // Update the height of the bar - use smaller heights for radix sort
-              const heightMultiplier = algorithm === 'radix' ? 2 : 3;
-              arrayBars[animation.index].style.height = `${animation.value * heightMultiplier}px`;
+              // Update the height of the bar
+              arrayBars[animation.index].style.height = `${animation.value * 3}px`;
               
               // Update the number in the bar
               const valueDiv = arrayBars[animation.index].querySelector('.array-value');
@@ -587,10 +585,9 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
             if (arrayBars[animation.toIndex]) {
               arrayBars[animation.toIndex].style.backgroundColor = BUCKET_HIGHLIGHT_COLOR;
               
-              // Update the value and height - use smaller heights for radix sort
+              // Update the value and height
               const newValue = animation.value;
-              const heightMultiplier = algorithm === 'radix' ? 2 : 3;
-              arrayBars[animation.toIndex].style.height = `${newValue * heightMultiplier}px`;
+              arrayBars[animation.toIndex].style.height = `${newValue * 3}px`;
               
               const valueDiv = arrayBars[animation.toIndex].querySelector('.array-value');
               if (valueDiv) valueDiv.textContent = newValue;
@@ -781,7 +778,7 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
                       <div 
                         key={`${index}-${valueIndex}`} 
                         className="bucket-item"
-                        style={{ height: `${value * 1.2}px` }}
+                        style={{ height: `${value * 1.5}px` }}
                       >
                         {value}
                       </div>
@@ -800,8 +797,8 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
               className="array-bar"
               key={idx}
               style={{
-                height: `${value * (algorithm === 'radix' ? 2 : 3)}px`,
-                width: `${Math.max(15, Math.min(30, 600 / arraySize))}px`, 
+                height: `${value * 2}px`,
+                width: `${Math.max(20, Math.min(40, 700 / arraySize))}px`,
                 backgroundColor: ARRAY_BAR_COLOR,
                 marginLeft: '1px',
                 marginRight: '1px'
