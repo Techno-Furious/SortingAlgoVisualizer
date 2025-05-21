@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import AlgorithmCode from './AlgorithmCode';
+import ComplexityInfo from './ComplexityInfo';
 import { 
   generateRandomArray, 
   bubbleSort, 
@@ -33,10 +34,10 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
   const [subArrays, setSubArrays] = useState([]);
   const [buckets, setBuckets] = useState(Array(10).fill([]));
   const [currentDigit, setCurrentDigit] = useState(null);
-  const [statusMessage, setStatusMessage] = useState('');
-  const [heapNodes, setHeapNodes] = useState([]);
+  const [statusMessage, setStatusMessage] = useState('');  const [heapNodes, setHeapNodes] = useState([]);
   const [heapHighlightNodes, setHeapHighlightNodes] = useState([]);
   const [showHeapView, setShowHeapView] = useState(false);
+  const [activeTab, setActiveTab] = useState('visualization'); // 'visualization', 'code', 'complexity'
   
   const animationsRef = useRef([]);
   const animationTimeoutsRef = useRef([]);
@@ -47,7 +48,7 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
   useEffect(() => {
     setCurrentSpeed(speed);
   }, [speed]);
-    // Generate a new random array
+  // Generate a new random array
   const resetArray = () => {
     const newArray = generateRandomArray(arraySize, 5, 100);
     setArray(newArray);
@@ -60,6 +61,7 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
     setHeapNodes([]);
     setHeapHighlightNodes([]);
     setShowHeapView(false);
+    setActiveTab('visualization'); // Switch to visualization tab when array is reset
     
     // Reset all visual indicators
     setTimeout(() => {
@@ -113,8 +115,7 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
       if (!customArray.every(item => typeof item === 'number' && !isNaN(item))) {
         throw new Error('All elements must be numbers');
       }
-      
-      // Set the custom array
+        // Set the custom array
       setArray(customArray);
       setErrorMessage('');
       setShowInputField(false);
@@ -122,6 +123,7 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
       setBuckets(Array(10).fill([]));
       setCurrentDigit(null);
       setStatusMessage('');
+      setActiveTab('visualization'); // Switch to visualization tab when custom array is set
       
       // Reset all visual indicators
       const arrayBars = document.getElementsByClassName('array-bar');
@@ -144,11 +146,16 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
       setCustomInput(array.join(', '));
     }
   };
-  
   // Reset the array when the array size changes
   useEffect(() => {
     resetArray();
+    setActiveTab('visualization'); // Switch to visualization tab when array size changes
   }, [arraySize]);
+  
+  // Switch to visualization tab when algorithm changes
+  useEffect(() => {
+    setActiveTab('visualization');
+  }, [algorithm]);
   
   // Listen for control events (play, pause, reset)
   useEffect(() => {
@@ -966,7 +973,28 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
   };
     return (
     <div className={`sorting-visualizer ${showHeapView ? 'heap-active' : ''}`}>
-      {/* Custom Array Input */}
+      {/* Custom Array Input */}      {/* Tab Switcher */}
+      <div className="tabs-container">
+        <button 
+          onClick={() => setActiveTab('visualization')} 
+          className={`tab-btn ${activeTab === 'visualization' ? 'active' : ''}`}
+        >
+          Visualization
+        </button>
+        <button 
+          onClick={() => setActiveTab('code')} 
+          className={`tab-btn ${activeTab === 'code' ? 'active' : ''}`}
+        >
+          Algorithm Code
+        </button>
+        <button 
+          onClick={() => setActiveTab('complexity')} 
+          className={`tab-btn ${activeTab === 'complexity' ? 'active' : ''}`}
+        >
+          Time & Space Complexity
+        </button>
+      </div>
+      
       <div className="custom-array-section">
         <button 
           onClick={toggleCustomInput} 
@@ -995,166 +1023,187 @@ const SortingVisualizer = ({ algorithm, speed, arraySize }) => {
         )}
         
         {errorMessage && <div className="error-message">{errorMessage}</div>}
-      </div>
-      
-      {/* Added top margin to create space between navbar and visualization area */}
-      <div className="visualization-area" style={{ marginTop: algorithm === 'heap' && showHeapView ? '30px' : '0' }}>
-        {/* Radix Sort Buckets Visualization - only shown for radix sort */}
-        {algorithm === 'radix' && currentDigit !== null && (
-          <div className="radix-buckets-container">
-            <div className="current-digit-indicator">
-              Sorting by: {currentDigit === 1 ? 'ones' : currentDigit === 10 ? 'tens' : currentDigit === 100 ? 'hundreds' : 'thousands'} place
-            </div>
-            <div className="buckets-row">
-              {buckets.map((bucket, index) => (
-                <div key={index} className="digit-bucket">
-                  <div className="bucket-label">{index}</div>
-                  <div className="bucket-items">
-                    {bucket.map((value, valueIndex) => (
-                      <div 
-                        key={`${index}-${valueIndex}`} 
-                        className="bucket-item"
-                        style={{ height: `${value * 1.2}px` }}
-                      >
-                        {value}
+      </div>      {/* Status Message Display - only show in visualization tab */}
+      {/* {statusMessage && activeTab === 'visualization' && (
+        <div className="status-message">
+          {statusMessage}
+        </div>
+      )} */}
+
+      {/* Tab Content */}
+      <div className="tab-content">
+        {/* Visualization Tab */}
+        {activeTab === 'visualization' && (
+          <div className="visualization-area" style={{ marginTop: algorithm === 'heap' && showHeapView ? '30px' : '0' }}>
+            {/* Radix Sort Buckets Visualization - only shown for radix sort */}
+            {algorithm === 'radix' && currentDigit !== null && (
+              <div className="radix-buckets-container">
+                <div className="current-digit-indicator">
+                  Sorting by: {currentDigit === 1 ? 'ones' : currentDigit === 10 ? 'tens' : currentDigit === 100 ? 'hundreds' : 'thousands'} place
+                </div>
+                <div className="buckets-row">
+                  {buckets.map((bucket, index) => (
+                    <div key={index} className="digit-bucket">
+                      <div className="bucket-label">{index}</div>
+                      <div className="bucket-items">
+                        {bucket.map((value, valueIndex) => (
+                          <div 
+                            key={`${index}-${valueIndex}`} 
+                            className="bucket-item"
+                            style={{ height: `${value * 1.2}px` }}
+                          >
+                            {value}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Heap Sort: show array above heap, both only once */}
+            {algorithm === 'heap' && showHeapView ? (
+              <>
+                <div className="array-container" style={{ marginBottom: '24px' }}>
+                  {array.map((value, idx) => (
+                    <div 
+                      className="array-bar"
+                      key={idx}
+                      style={{
+                        height: `${value * 3}px`,
+                        width: `${Math.max(15, Math.min(30, 600 / arraySize))}px`,
+                        backgroundColor: ARRAY_BAR_COLOR,
+                        marginLeft: '1px',
+                        marginRight: '1px'
+                      }}
+                    >
+                      <div className="array-value">{value}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="heap-visualization">
+                  <div className="heap-visualization-header">
+                    Heap Visualization
+                  </div>
+                  <div className="heap-status">
+                    {statusMessage}
+                  </div>
+                  <div className="heap-visualization-content">
+                    {renderHeapTree()}
+                  </div>
+                  <div className="heap-indicator">
+                    The heap is visualized as a binary tree where each parent node is greater than its children (max heap).
+                  </div>
+                  <div className="visualization-legend">
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: ARRAY_BAR_COLOR }}></div>
+                      <span>Heap Node</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: COMPARE_COLOR }}></div>
+                      <span>Comparing Nodes</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: SWAP_COLOR }}></div>
+                      <span>Swapping Nodes</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: SORTED_COLOR }}></div>
+                      <span>Sorted Node</span>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              </>
+            ) : (
+              // All other algorithms: just show the array bars as before
+              <div className="array-container">
+                {array.map((value, idx) => (
+                  <div 
+                    className="array-bar"
+                    key={idx}
+                    style={{
+                      height: `${value * (algorithm === 'radix' ? 2 : 3)}px`,
+                      width: `${Math.max(15, Math.min(30, 600 / arraySize))}px`, 
+                      backgroundColor: ARRAY_BAR_COLOR,
+                      marginLeft: '1px',
+                      marginRight: '1px'
+                    }}
+                  >
+                    <div className="array-value">{value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
 
-        {/* Heap Sort: show array above heap, both only once */}
-        {algorithm === 'heap' && showHeapView ? (
-          <>
-            <div className="array-container" style={{ marginBottom: '24px' }}>
-              {array.map((value, idx) => (
-                <div 
-                  className="array-bar"
-                  key={idx}
-                  style={{
-                    height: `${value * 3}px`,
-                    width: `${Math.max(15, Math.min(30, 600 / arraySize))}px`,
-                    backgroundColor: ARRAY_BAR_COLOR,
-                    marginLeft: '1px',
-                    marginRight: '1px'
-                  }}
-                >
-                  <div className="array-value">{value}</div>
-                </div>
-              ))}
-            </div>
-            <div className="heap-visualization">
-              <div className="heap-visualization-header">
-                Heap Visualization
-              </div>
-              <div className="heap-status">
-                {statusMessage}
-              </div>
-              <div className="heap-visualization-content">
-                {renderHeapTree()}
-              </div>
-              <div className="heap-indicator">
-                The heap is visualized as a binary tree where each parent node is greater than its children (max heap).
-              </div>
+            {/* Visualization Legend */}
+            {!(algorithm === 'heap' && showHeapView) && (
               <div className="visualization-legend">
                 <div className="legend-item">
                   <div className="legend-color" style={{ backgroundColor: ARRAY_BAR_COLOR }}></div>
-                  <span>Heap Node</span>
+                  <span>Unsorted</span>
                 </div>
                 <div className="legend-item">
                   <div className="legend-color" style={{ backgroundColor: COMPARE_COLOR }}></div>
-                  <span>Comparing Nodes</span>
+                  <span>Comparing</span>
                 </div>
                 <div className="legend-item">
                   <div className="legend-color" style={{ backgroundColor: SWAP_COLOR }}></div>
-                  <span>Swapping Nodes</span>
+                  <span>Swapping</span>
                 </div>
+                {algorithm === 'merge' && (
+                  <>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: MERGE_SPLIT_COLOR }}></div>
+                      <span>Splitting</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: MERGE_JOIN_COLOR }}></div>
+                      <span>Joining</span>
+                    </div>
+                  </>
+                )}
+                {algorithm === 'quick' && (
+                  <div className="legend-item">
+                    <div className="legend-color" style={{ backgroundColor: PIVOT_COLOR }}></div>
+                    <span>Pivot</span>
+                  </div>
+                )}
+                {algorithm === 'radix' && (
+                  <>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: BUCKET_COLOR }}></div>
+                      <span>Bucket</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: BUCKET_HIGHLIGHT_COLOR }}></div>
+                      <span>Collecting</span>
+                    </div>
+                  </>
+                )}
                 <div className="legend-item">
                   <div className="legend-color" style={{ backgroundColor: SORTED_COLOR }}></div>
-                  <span>Sorted Node</span>
+                  <span>Sorted</span>
                 </div>
               </div>
-            </div>
-          </>
-        ) : (
-          // All other algorithms: just show the array bars as before
-          <div className="array-container">
-            {array.map((value, idx) => (
-              <div 
-                className="array-bar"
-                key={idx}
-                style={{
-                  height: `${value * (algorithm === 'radix' ? 2 : 3)}px`,
-                  width: `${Math.max(15, Math.min(30, 600 / arraySize))}px`, 
-                  backgroundColor: ARRAY_BAR_COLOR,
-                  marginLeft: '1px',
-                  marginRight: '1px'
-                }}
-              >
-                <div className="array-value">{value}</div>
-              </div>
-            ))}
+            )}
+          </div>
+        )}
+
+        {/* Code Tab */}
+        {activeTab === 'code' && (
+          <div className="algorithm-container">
+            <AlgorithmCode algorithm={algorithm} />
+          </div>
+        )}
+
+        {/* Complexity Tab */}
+        {activeTab === 'complexity' && (
+          <div className="complexity-container">
+            <ComplexityInfo algorithm={algorithm} />
           </div>
         )}
       </div>
-      
-      <div className="algorithm-container">
-        <AlgorithmCode algorithm={algorithm} />
-      </div>
-      {/* Only show the legend for non-heap sorts here (heap legend is inside heap viz above) */}
-      {!(algorithm === 'heap' && showHeapView) && (
-        <div className="visualization-legend">
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: ARRAY_BAR_COLOR }}></div>
-            <span>Unsorted</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: COMPARE_COLOR }}></div>
-            <span>Comparing</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: SWAP_COLOR }}></div>
-            <span>Swapping</span>
-          </div>
-          {algorithm === 'merge' && (
-            <>
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: MERGE_SPLIT_COLOR }}></div>
-                <span>Splitting</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: MERGE_JOIN_COLOR }}></div>
-                <span>Joining</span>
-              </div>
-            </>
-          )}
-          {algorithm === 'quick' && (
-            <div className="legend-item">
-              <div className="legend-color" style={{ backgroundColor: PIVOT_COLOR }}></div>
-              <span>Pivot</span>
-            </div>
-          )}
-          {algorithm === 'radix' && (
-            <>
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: BUCKET_COLOR }}></div>
-                <span>Bucket</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: BUCKET_HIGHLIGHT_COLOR }}></div>
-                <span>Collecting</span>
-              </div>
-            </>
-          )}
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: SORTED_COLOR }}></div>
-            <span>Sorted</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

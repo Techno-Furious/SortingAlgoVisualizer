@@ -615,3 +615,90 @@ button:disabled {
     margin-bottom: 20px;
   }
 }
+
+/* Tab System Styles */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #3a3a5e;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.25rem;
+  background-color: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+  color: white;
+  border-bottom: 2px solid #e94560;
+  font-weight: 600;
+}
+
+.tab-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.complexity-container {
+  background-color: #242437;
+  border-radius: 4px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.complexity-info {
+  text-align: left;
+  color: #e5e5e5;
+}
+
+.complexity-info h2 {
+  color: #e94560;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.complexity-section {
+  margin-bottom: 2rem;
+}
+
+.complexity-section h3 {
+  color: #3a86ff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.complexity-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.complexity-table th, .complexity-table td {
+  padding: 0.75rem;
+  border: 1px solid #3a3a5e;
+  text-align: center;
+}
+
+.complexity-table th {
+  background-color: #16213e;
+}
+
+.complexity-section p {
+  line-height: 1.6;
+}
